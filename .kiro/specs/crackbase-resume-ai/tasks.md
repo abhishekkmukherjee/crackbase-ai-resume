@@ -6,7 +6,7 @@
   - Set up project folder structure according to design specifications
   - _Requirements: 1.1, 2.1, 3.1_
 
-- [ ] 2. Implement database schema and data models
+- [] 2. Implement database schema and data models
   - Create Supabase database tables (users, payments, resumes, ai_logs)
   - Write TypeScript interfaces for all data models
   - Implement database utility functions and connection helpers
@@ -14,7 +14,7 @@
   - _Requirements: 5.1, 5.2, 5.5_
 
 - [ ] 3. Build core form components and validation
-- [ ] 3.1 Create ResumeForm component with input fields
+- [] 3.1 Create ResumeForm component with input fields
   - Implement personal information form section with validation
   - Build education section with dynamic add/remove functionality
   - Create skills input with technical and soft skills categories
