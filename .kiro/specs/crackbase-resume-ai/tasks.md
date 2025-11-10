@@ -6,7 +6,7 @@
   - Set up project folder structure according to design specifications
   - _Requirements: 1.1, 2.1, 3.1_
 
-- [] 2. Implement database schema and data models
+- [x] 2. Implement database schema and data models
   - Create Supabase database tables (users, payments, resumes, ai_logs)
   - Write TypeScript interfaces for all data models
   - Implement database utility functions and connection helpers
@@ -14,13 +14,13 @@
   - _Requirements: 5.1, 5.2, 5.5_
 
 - [ ] 3. Build core form components and validation
-- [] 3.1 Create ResumeForm component with input fields
+- [x] 3.1 Create ResumeForm component with input fields
   - Implement personal information form section with validation
   - Build education section with dynamic add/remove functionality
   - Create skills input with technical and soft skills categories
   - _Requirements: 1.1, 1.2, 1.6_
 
-- [ ] 3.2 Implement experience and projects form sections
+- [x] 3.2 Implement experience and projects form sections
   - Build work experience form with multiple entries support
   - Create projects section with technology tags and descriptions
   - Add achievements input field with dynamic list management
@@ -34,7 +34,7 @@
 
 - [ ] 4. Implement AI integration and resume generation
 - [ ] 4.1 Set up AI service integration
-  - Configure OpenAI/Gemini API client with authentication
+  - Configure Gemini API client with authentication
   - Create AI prompt templates for resume generation
   - Implement AI service wrapper with error handling and retries
   - _Requirements: 2.1, 2.6, 7.1_
@@ -54,8 +54,8 @@
   - _Requirements: 2.2, 2.3, 2.4_
 
 - [ ] 5. Implement payment processing system
-- [ ] 5.1 Set up Razorpay integration
-  - Configure Razorpay client with API keys and environment setup
+- [ ] 5.1 Set up Phone pe payment integration
+  - Configure Phone pe client with API keys and environment setup
   - Create PaymentButton component with Razorpay checkout modal
   - Implement payment order creation API endpoint
   - _Requirements: 3.1, 3.2_

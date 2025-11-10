@@ -1,15 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-
-interface PersonalInfo {
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  linkedin?: string;
-  github?: string;
-}
+import { PersonalInfo } from '@/lib/types';
 
 interface PersonalInfoFormProps {
   data: PersonalInfo;
@@ -19,110 +11,247 @@ interface PersonalInfoFormProps {
 
 export default function PersonalInfoForm({ data, onUpdate, onNext }: PersonalInfoFormProps) {
   const [formData, setFormData] = useState<PersonalInfo>(data);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleChange = (field: keyof PersonalInfo, value: string) => {
     const updated = { ...formData, [field]: value };
     setFormData(updated);
     onUpdate(updated);
+    
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+    
+    if (!formData.name.trim()) newErrors.name = 'Full name is required';
+    if (!formData.email.trim()) newErrors.email = 'Email is required';
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Please enter a valid email';
+    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
+    if (!formData.address.trim()) newErrors.address = 'Address is required';
+    if (!formData.city.trim()) newErrors.city = 'City is required';
+    if (!formData.state.trim()) newErrors.state = 'State is required';
+    if (!formData.zipCode.trim()) newErrors.zipCode = 'ZIP code is required';
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onNext();
+    if (validateForm()) {
+      onNext();
+    }
   };
 
+  const inputClasses = (fieldName: string) => `
+    w-full px-4 py-3 border-2 rounded-xl transition-all duration-200 text-gray-900 placeholder-gray-400
+    ${errors[fieldName] 
+      ? 'border-red-300 focus:border-red-500 focus:ring-red-200' 
+      : 'border-gray-200 focus:border-blue-500 focus:ring-blue-100'
+    }
+    focus:outline-none focus:ring-4 bg-white hover:border-gray-300
+  `;
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-2xl font-bold mb-6 text-black">Personal Information</h2>
+    <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">Personal Information</h2>
+        <p className="text-gray-600">Let's start with your basic details to create your professional resume.</p>
+      </div>
       
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Full Name *
-        </label>
-        <input
-          type="text"
-          required
-          value={formData.name}
-          onChange={(e) => handleChange('name', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500 text-black"
-          placeholder="Enter your full name"
-        />
-      </div>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Full Name */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Full Name *
+          </label>
+          <input
+            type="text"
+            required
+            value={formData.name}
+            onChange={(e) => handleChange('name', e.target.value)}
+            className={inputClasses('name')}
+            placeholder="Enter your full name"
+          />
+          {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
+        </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Email Address *
-        </label>
-        <input
-          type="email"
-          required
-          value={formData.email}
-          onChange={(e) => handleChange('email', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500 text-black"
-          placeholder="your.email@example.com"
-        />
-      </div>
+        {/* Email and Phone Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Email Address *
+            </label>
+            <input
+              type="email"
+              required
+              value={formData.email}
+              onChange={(e) => handleChange('email', e.target.value)}
+              className={inputClasses('email')}
+              placeholder="your.email@example.com"
+            />
+            {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+          </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Phone Number *
-        </label>
-        <input
-          type="tel"
-          required
-          value={formData.phone}
-          onChange={(e) => handleChange('phone', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500 text-black"
-          placeholder="+91 9876543210"
-        />
-      </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Phone Number *
+            </label>
+            <input
+              type="tel"
+              required
+              value={formData.phone}
+              onChange={(e) => handleChange('phone', e.target.value)}
+              className={inputClasses('phone')}
+              placeholder="+91 9876543210"
+            />
+            {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone}</p>}
+          </div>
+        </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Address *
-        </label>
-        <textarea
-          required
-          value={formData.address}
-          onChange={(e) => handleChange('address', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500 text-black"
-          placeholder="Your complete address"
-          rows={3}
-        />
-      </div>
+        {/* Address */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Street Address *
+          </label>
+          <input
+            type="text"
+            required
+            value={formData.address}
+            onChange={(e) => handleChange('address', e.target.value)}
+            className={inputClasses('address')}
+            placeholder="123 Main Street, Apartment 4B"
+          />
+          {errors.address && <p className="mt-1 text-sm text-red-600">{errors.address}</p>}
+        </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          LinkedIn Profile (Optional)
-        </label>
-        <input
-          type="url"
-          value={formData.linkedin || ''}
-          onChange={(e) => handleChange('linkedin', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500 text-black"
-          placeholder="https://linkedin.com/in/yourprofile"
-        />
-      </div>
+        {/* City, State, ZIP Row */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              City *
+            </label>
+            <input
+              type="text"
+              required
+              value={formData.city}
+              onChange={(e) => handleChange('city', e.target.value)}
+              className={inputClasses('city')}
+              placeholder="Mumbai"
+            />
+            {errors.city && <p className="mt-1 text-sm text-red-600">{errors.city}</p>}
+          </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          GitHub Profile (Optional)
-        </label>
-        <input
-          type="url"
-          value={formData.github || ''}
-          onChange={(e) => handleChange('github', e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500 text-black"
-          placeholder="https://github.com/yourusername"
-        />
-      </div>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              State *
+            </label>
+            <input
+              type="text"
+              required
+              value={formData.state}
+              onChange={(e) => handleChange('state', e.target.value)}
+              className={inputClasses('state')}
+              placeholder="Maharashtra"
+            />
+            {errors.state && <p className="mt-1 text-sm text-red-600">{errors.state}</p>}
+          </div>
 
-      <button
-        type="submit"
-        className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
-      >
-        Next: Education
-      </button>
-    </form>
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              ZIP Code *
+            </label>
+            <input
+              type="text"
+              required
+              value={formData.zipCode}
+              onChange={(e) => handleChange('zipCode', e.target.value)}
+              className={inputClasses('zipCode')}
+              placeholder="400001"
+            />
+            {errors.zipCode && <p className="mt-1 text-sm text-red-600">{errors.zipCode}</p>}
+          </div>
+        </div>
+
+        {/* Professional Summary */}
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Professional Summary
+            <span className="text-gray-400 font-normal ml-1">(Optional)</span>
+          </label>
+          <textarea
+            value={formData.summary || ''}
+            onChange={(e) => handleChange('summary', e.target.value)}
+            className={inputClasses('summary')}
+            placeholder="Brief overview of your professional background and career objectives..."
+            rows={4}
+          />
+          <p className="mt-1 text-xs text-gray-500">A compelling summary can help your resume stand out to employers.</p>
+        </div>
+
+        {/* Social Links */}
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-gray-900">Professional Links</h3>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                LinkedIn Profile
+                <span className="text-gray-400 font-normal ml-1">(Optional)</span>
+              </label>
+              <input
+                type="url"
+                value={formData.linkedin || ''}
+                onChange={(e) => handleChange('linkedin', e.target.value)}
+                className={inputClasses('linkedin')}
+                placeholder="https://linkedin.com/in/yourprofile"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                GitHub Profile
+                <span className="text-gray-400 font-normal ml-1">(Optional)</span>
+              </label>
+              <input
+                type="url"
+                value={formData.github || ''}
+                onChange={(e) => handleChange('github', e.target.value)}
+                className={inputClasses('github')}
+                placeholder="https://github.com/yourusername"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Portfolio Website
+              <span className="text-gray-400 font-normal ml-1">(Optional)</span>
+            </label>
+            <input
+              type="url"
+              value={formData.portfolio || ''}
+              onChange={(e) => handleChange('portfolio', e.target.value)}
+              className={inputClasses('portfolio')}
+              placeholder="https://yourportfolio.com"
+            />
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-4 focus:ring-blue-200 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+        >
+          Continue to Education
+          <svg className="inline-block ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </button>
+      </form>
+    </div>
   );
 }
