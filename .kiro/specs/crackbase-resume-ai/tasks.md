@@ -26,27 +26,27 @@
   - Add achievements input field with dynamic list management
   - _Requirements: 1.4, 1.5_
 
-- [ ] 3.3 Add form validation and data persistence
+- [x] 3.3 Add form validation and data persistence
   - Implement client-side validation with error messages
   - Create form state management and temporary data storage
   - Add form submission handling and data serialization
   - _Requirements: 1.6, 1.7_
 
-- [ ] 4. Implement AI integration and resume generation
-- [ ] 4.1 Set up AI service integration
-  - Configure Gemini API client with authentication
+- [x] 4. Implement AI integration and resume generation
+- [x] 4.1 Set up AI service integration
+  - Configure Gemini API client with authentication(api:AIzaSyDvX8wT5spD5Sls3kn4QSJXUkYDxVZ4JwI)
   - Create AI prompt templates for resume generation
   - Implement AI service wrapper with error handling and retries
   - _Requirements: 2.1, 2.6, 7.1_
 
-- [ ] 4.2 Build resume generation API endpoint
+- [x] 4.2 Build resume generation API endpoint
   - Create /api/generate-resume route with form data processing
   - Implement AI content generation with structured prompts
   - Add AI usage logging and token tracking functionality
   - Store generated resume data in database with user association
   - _Requirements: 2.1, 2.7, 5.3_
 
-- [ ] 4.3 Create resume preview component
+- [x] 4.3 Create resume preview component
   - Build ResumePreview component with professional formatting
   - Implement preview watermark overlay for unpaid users
   - Add loading states and error handling for generation process
@@ -56,12 +56,12 @@
 - [ ] 5. Implement payment processing system
 - [ ] 5.1 Set up Phone pe payment integration
   - Configure Phone pe client with API keys and environment setup
-  - Create PaymentButton component with Razorpay checkout modal
+  - Create PaymentButton component with phonepe checkout modal
   - Implement payment order creation API endpoint
   - _Requirements: 3.1, 3.2_
 
 - [ ] 5.2 Build payment verification and webhook handling
-  - Create payment webhook endpoint for Razorpay notifications
+  - Create payment webhook endpoint for phonepe notifications
   - Implement webhook signature verification for security
   - Add payment status updates and database record management
   - Create payment success/failure UI feedback components

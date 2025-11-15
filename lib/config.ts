@@ -10,7 +10,7 @@ export const APP_CONFIG = {
     display: '₹49'
   },
   ai: {
-    model: 'gpt-4o-mini',
+    model: 'models/gemini-pro',
     maxTokens: 2000,
     temperature: 0.7
   },

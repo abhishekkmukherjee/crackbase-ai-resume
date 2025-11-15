@@ -13,14 +13,34 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CrackBase Resume AI - AI-Powered Resume Builder",
-  description: "Create professional resumes with AI assistance. Perfect for students and freshers. Generate, preview, and download your resume for just ₹49.",
-  keywords: "resume builder, AI resume, job application, career, students, freshers",
-  authors: [{ name: "CrackBase" }],
+  title: "Free ATS Resume Builder | Create Professional Resume Online",
+  description: "Build ATS-friendly resumes with our free chatbot interface. Get hired faster with optimized resume templates and instant PDF download.",
+  keywords: "ATS resume builder, free resume maker, resume chatbot, ATS friendly resume, professional resume, resume templates, job application, career tools",
+  authors: [{ name: "ATS Resume Chatbot" }],
+  robots: "index, follow",
   openGraph: {
-    title: "CrackBase Resume AI",
-    description: "AI-Powered Resume Builder for Students and Freshers",
+    title: "Free ATS Resume Builder | Create Professional Resume Online",
+    description: "Build ATS-friendly resumes with our free chatbot interface. Get hired faster with optimized resume templates and instant PDF download.",
     type: "website",
+    url: process.env.NEXT_PUBLIC_APP_URL,
+    siteName: "ATS Resume Chatbot",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "ATS Resume Builder - Create Professional Resumes",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Free ATS Resume Builder | Create Professional Resume Online",
+    description: "Build ATS-friendly resumes with our free chatbot interface. Get hired faster with optimized resume templates and instant PDF download.",
+    images: ["/og-image.jpg"],
+  },
+  alternates: {
+    canonical: process.env.NEXT_PUBLIC_APP_URL,
   },
 };
 
