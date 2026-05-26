@@ -1,16 +1,36 @@
 import { createClient } from '@supabase/supabase-js'
 import { User, Payment, Resume, AILog, ResumeFormData } from './types'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let _supabase: any = null
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let _supabaseAdmin: any = null
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const supabase: any = new Proxy({}, {
+  get(_, prop) {
+    if (!_supabase) {
+      _supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      )
+    }
+    return _supabase[prop]
+  }
+})
 
-// Server-side client with service role key
-export const supabaseAdmin = createClient(
-  supabaseUrl,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const supabaseAdmin: any = new Proxy({}, {
+  get(_, prop) {
+    if (!_supabaseAdmin) {
+      _supabaseAdmin = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
+      )
+    }
+    return _supabaseAdmin[prop]
+  }
+})
 
 // Database utility functions
 export class DatabaseService {
@@ -183,8 +203,8 @@ export class DatabaseService {
 
     if (error) throw new Error(`Failed to get AI usage stats: ${error.message}`)
     
-    const totalTokens = data?.reduce((sum, log) => sum + (log.tokens_used || 0), 0) || 0
-    const totalCost = data?.reduce((sum, log) => sum + (log.cost_usd || 0), 0) || 0
+    const totalTokens = data?.reduce((sum: number, log: { tokens_used?: number; cost_usd?: number }) => sum + (log.tokens_used || 0), 0) || 0
+    const totalCost = data?.reduce((sum: number, log: { tokens_used?: number; cost_usd?: number }) => sum + (log.cost_usd || 0), 0) || 0
     
     return { totalTokens, totalCost, requestCount: data?.length || 0 }
   }
